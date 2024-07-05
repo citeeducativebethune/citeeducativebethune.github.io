@@ -1,0 +1,10 @@
+---
+export type Props = {
+    Element?: "h1" | "h2"
+    white ?:boolean
+}
+
+const {Element="h2",white= false} = Astro.props
+---
+
+<Element class="mb-8 text-center font-display leading-tight text-5xl md:text-6xl font-semibold" class:list={[white &&"text-white"]}><slot/></Element>

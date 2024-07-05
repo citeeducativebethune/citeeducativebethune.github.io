@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets'
+import type { CollectionEntry } from 'astro:content'
+import { getEntry } from 'astro:content'
+import { formatDate } from 'src/libs/date.ts'
+import { routes } from 'src/libs/routes.ts'
+
+export type Props = {
+	slug: CollectionEntry<'actions'>['slug']
+	withBg?: boolean
+}
+
+const { slug, withBg } = Astro.props
+
+const action = await getEntry('actions', slug)
+---
+
+<div
+	class="h-full overflow-hidden rounded-xl border transition-transform duration-300 hover:scale-95"
+	class:list={[withBg && 'bg-white']}
+	title={action.data.title}
+>
+	<a href={routes.action(action.slug)} class="h-full">
+		<Image
+			src={action.data.thumbnail.image}
+			alt={action.data.thumbnail.alt ?? ''}
+			class="aspect-[5_/_3] h-auto w-full object-cover"
+		/>
+	</a>
+	<div class="grid gap-4 px-3 py-4">
+		<a
+			href={routes.action(action.slug)}
+			class="line-clamp-2 text-2xl font-bold leading-tight hover:text-secondary-2"
+		>
+			<h3>
+				{action.data.title}
+			</h3>
+		</a>
+		<div>
+			<time class="text-gray-600" datetime={action.data.date.toDateString()}
+				>{formatDate(action.data.date)}</time
+			>
+			<p class="line-clamp-2">{action.data.description}</p>
+		</div>
+	</div>
+</div>

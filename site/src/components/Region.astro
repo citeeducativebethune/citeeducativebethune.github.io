@@ -1,0 +1,57 @@
+---
+export type Props = {
+	top?: boolean
+	bottom?: boolean
+	color?: 'primary' | 'secondary' | 'secondary-2' | 'neutral' | 'transparent'
+}
+
+const colorFill = {
+	primary: 'fill-primary',
+	secondary: 'fill-secondary-1',
+	'secondary-2': 'fill-secondary-2',
+	neutral: 'fill-gray-200',
+	transparent: ""
+}
+
+const colorBg = {
+	primary: 'bg-primary',
+	secondary: 'bg-secondary-1',
+	'secondary-2': 'bg-secondary-2',
+	neutral: 'bg-gray-200',
+	transparent: ""
+}
+const { top = false, bottom = false, color = 'neutral' } = Astro.props
+---
+
+<section class:list={[colorFill[color]]}>
+	{
+		top && (
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				version="1.1"
+				viewBox="0 0 1 1"
+				class="h-16 w-full"
+				preserveAspectRatio="none"
+			>
+				<path d="M0 1 H 1 V 0.2 C 0.5 -0 0.5 0 0 0.3 V 1 Z" />
+			</svg>
+		)
+	}
+
+	<div class="py-8 px-4" class:list={[colorBg[color]]}>
+		<slot />
+	</div>
+	{
+		bottom && (
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				version="1.1"
+				viewBox="0 0 1 1"
+				class="h-16 w-full"
+				preserveAspectRatio="none"
+			>
+				<path d="M0 0 H 1 V 0.4 C 0.48 1.1 0.4 0.3 0 1 V 0 Z" />
+			</svg>
+		)
+	}
+</section>

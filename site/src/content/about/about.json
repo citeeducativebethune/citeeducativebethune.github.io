@@ -1,0 +1,43 @@
+{
+	"introduction": {
+		"title": "La Cité Éducative de Béthune",
+		"content": "Les Cités éducatives visent à intensifier les prises en charge éducatives des enfants et des jeunes, de la naissance à l’insertion professionnelle, avant, pendant, autour et après le cadre scolaire. Elles consistent en une grande alliance des acteurs éducatifs dans les quartiers prioritaires de la politique de la ville : parents, services de l’État, des collectivités, associations, habitants. À travers les Cités éducatives, le Gouvernement veut ainsi fédérer tous les acteurs de l’éducati^on scolaire et périscolaire, dans les territoires qui en ont le plus besoin et où seront concentrés les moyens publics."
+	},
+	"perimeter": {
+		"title": "Le Périmètre de la cité éducative ",
+		"content": "La commune de Béthune dispose de deux quartiers prioritaires, le Mont Liébaut et la Rue de Lille. Il est proposé d’associer ces deux territoires afin de disposer d’une programmation homogène. La ville de Béthune, « Smart City », se veut dynamique et tournée vers les nouvelles technologies. La commune possède une ingénierie dédiée à la Politique de la ville qui travaille en lien étroit avec les autres services (jeunesse, éducation, cohésion sociale, santé, …), ce qui traduit une volonté certaine de s’investir pour les habitants des quartiers et plus particulièrement les jeunes.",
+		"image": "/src/assets/images/about/map/perimeter/image.png"
+	},
+	"goals": {
+		"title": "Les Enjeux",
+		"items": [
+			"Favoriser l’ambition et la réussite de tous, dans le cadre d’une alliiance éducative renforcée.",
+			"Favoriser le vivre ensemble et promouvoir les valeurs de la République.",
+			"Favoriser le bien-être de tous.",
+			"Lutter contre les fractures et appréhender le monde de demain."
+		]
+	},
+	"contacts": [
+		{
+			"name": "Elise Cuvillier",
+			"description": "Responsable du Service Politique de la Ville – Mairie de Béthune"
+		},
+		{
+			"name": "Eugénie Bailleul",
+			"description": "Inspectrice Education Nationale Béthune 1"
+		},
+		{
+			"name": "Hélène Piwek",
+			"description": "Coordinatrice Cité Educative Mairie de Béthune"
+		},
+		{
+			"name": "Jacqueline Sochaki",
+			"description": "Coordinatrice Cité Educative Education Nationale",
+			"mail": "example@mail.com"
+		},
+		{
+			"name": "Julien Dauptain",
+			"description": "Principal du Collège Verlaine et chef de file Education nationale."
+		}
+	]
+}

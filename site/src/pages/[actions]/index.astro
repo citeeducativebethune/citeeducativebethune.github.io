@@ -1,0 +1,35 @@
+---
+import type { GetStaticPaths } from 'astro'
+import BaseLayout from 'src/layouts/BaseLayout.astro'
+import { routes } from 'src/libs/routes.ts'
+import { getCollection } from 'astro:content'
+import ActionCard from 'src/components/ActionCard.astro'
+import Autogrid from 'src/components/Autogrid.astro'
+import Region from 'src/components/Region.astro'
+import { labels } from 'settings.json'
+import Title from 'src/components/Title.astro'
+import { sortByDate } from 'src/libs/collections.ts'
+
+const actions = sortByDate(await getCollection('actions'))
+
+export const getStaticPaths = (() => {
+	return [
+		{
+			params: { actions: routes.actions() },
+		},
+	]
+}) satisfies GetStaticPaths
+---
+
+<BaseLayout titles={[labels.actions]}>
+	<Region bottom color="neutral">
+		<Title Element='h1'>
+			Les {labels.actions}
+		</Title>
+	</Region>
+	<Region color='transparent'>
+		<Autogrid>
+			{actions.map((el) => <ActionCard slug={el.slug} />)}
+		</Autogrid>
+	</Region>
+</BaseLayout>

@@ -1,0 +1,41 @@
+---
+import '@fontsource/averia-sans-libre'
+import settings from 'settings.json'
+import Header from 'src/components/Header.svelte'
+import logo from 'src/assets/images/logo.png'
+import { Image } from 'astro:assets'
+export type Props = {
+	titles?: string[]
+}
+
+const { titles } = Astro.props
+
+const pageTitle = [...(titles ?? []), settings.title].join(' • ')
+---
+
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{pageTitle}</title>
+		<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+		<script src="/pagefind/pagefind-ui.js" is:inline></script>
+	</head>
+	<body>
+		<Header client:idle>
+			<Image
+				src={logo}
+				alt={''}
+				slot="logo"
+				class="h-full w-auto"
+				width={400}
+			/>
+		</Header>
+
+		<main>
+			<slot />
+		</main>
+	</body>
+</html>

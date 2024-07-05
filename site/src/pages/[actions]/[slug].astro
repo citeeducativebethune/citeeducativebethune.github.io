@@ -1,0 +1,80 @@
+---
+import type { GetStaticPaths } from 'astro'
+import { Image } from 'astro:assets'
+import { getEntry } from 'astro:content'
+import { getCollection } from 'astro:content'
+import BaseLayout from 'src/layouts/BaseLayout.astro'
+import { formatDate } from 'src/libs/date.ts'
+import { routes } from 'src/libs/routes.ts'
+import { slugify } from 'src/libs/string.ts'
+import { labels } from 'settings.json'
+
+const { slug } = Astro.params
+
+const action = (await getEntry('actions', slug))!
+
+const { Content } = await action.render()
+
+export const getStaticPaths = (async () => {
+	const actions = await getCollection('actions')
+	return actions.map((el) => ({
+		params: {
+			actions: routes.actions(),
+			slug: slugify(el.slug),
+		},
+	}))
+}) satisfies GetStaticPaths
+const actors = (await Promise.all(
+	action.data.actors
+		.map(async (el) => {
+			const actor = await getEntry('actors', el)
+			if (actor === undefined) return undefined
+			return {
+				title: actor.data.title,
+				url: routes.actor(actor.slug),
+			}
+		})
+		.filter((el) => el !== undefined)
+)) as { title: string; url: string }[]
+---
+
+<BaseLayout titles={[action.data.title, labels.actions]}>
+	<div data-pagefind-body>
+		<div>
+			<Image
+				src={action.data.thumbnail.image}
+				alt={action.data.thumbnail.alt ?? ''}
+				class="h-96 object-cover"
+			/>
+			<div
+				class="relative z-10 mx-auto w-full max-w-lg border-b bg-white px-2 py-8 text-center sm:-mt-12 md:max-w-xl lg:max-w-2xl"
+			>
+				<time datetime="">{formatDate(action.data.date)}</time>
+				<h1 class="my-4 font-display text-4xl leading-tight md:text-6xl">
+					{action.data.title}
+				</h1>
+				{action.data.authors && <div>{action.data.authors}</div>}
+				{
+					actors.length > 0 && (
+						<ul class="mt-12 flex flex-wrap justify-center gap-1">
+							{actors.map((el) => (
+								<li>
+									<a
+										href={el.url}
+										class="rounded-2xl border px-2 py-0.5 text-gray-600 transition-colors hover:border-secondary-2 hover:text-secondary-2"
+									>
+										{el.title}
+									</a>
+								</li>
+							))}
+						</ul>
+					)
+				}
+			</div>
+		</div>
+
+		<article class="prose mx-auto mt-12 px-4 pb-16 md:prose-lg sm:mt-24">
+			<Content />
+		</article>
+	</div>
+</BaseLayout>

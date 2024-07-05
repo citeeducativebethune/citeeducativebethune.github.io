@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content'
+import ActionsReel from 'src/components/ActionsReel.astro'
+import Autogrid from 'src/components/Autogrid.astro'
+import Region from 'src/components/Region.astro'
+import Title from 'src/components/Title.astro'
+import BaseLayout from 'src/layouts/BaseLayout.astro'
+import { routes } from 'src/libs/routes.ts'
+const actors = (await getCollection('actors')).filter(
+	(el) => el.data.scholar === true,
+)
+---
+
+<BaseLayout>
+	<Region bottom color="primary">
+		<Title  white>
+			Actualités
+		</Title>
+		<ActionsReel />
+		<div class="pt-16 text-right text-lg">
+			<a href={routes.actions()} class="text-white underline">Voire toutes les actions</a>
+		</div>
+	</Region>
+	<Region color='transparent'>
+		<Title>
+			Les Établissement
+		</Title>
+		<Autogrid alignItems="center">
+			{
+				actors.map((el) => (
+					<a
+						class="rounded-xl bg-secondary-1 px-6 py-3 text-center text-3xl font-semibold text-white transition-transform hover:scale-95"
+						href={routes.actor(el.slug)}
+					>
+						{el.data.title}
+					</a>
+				))
+			}
+		</Autogrid>
+		<div class="text-center pt-8 pb-4">
+		<a href={routes.actors()} class="bg-secondary-1 rounded-full p-1 mx-auto inline-block hover:-translate-y-1 transition-transform duration-200" title="tous les acteurs">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 stroke-white">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+			  </svg>
+		</a>
+	</div>
+
+	</Region>
+</BaseLayout>

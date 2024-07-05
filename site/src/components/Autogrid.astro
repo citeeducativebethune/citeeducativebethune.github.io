@@ -1,0 +1,47 @@
+---
+export type Props = {
+	minColumnWidth?: number
+	maxColumns?: number
+	columnGap?: number
+	rowGap?: number
+	alignItems?: 'stretch' | 'center' | 'start' | 'end'
+}
+const {
+	minColumnWidth = 16,
+	maxColumns = 4,
+	columnGap = 1,
+	rowGap = 2,
+	alignItems = 'stretch',
+} = Astro.props
+
+const cssVariables = {
+	'min-column-width': `${minColumnWidth}rem`,
+	'max-columns': maxColumns,
+	'column-gap': `${columnGap}rem`,
+	'row-gap': `${rowGap}rem`,
+	'align-items': `${alignItems}`,
+}
+---
+
+<div class="container mx-auto px-4">
+	<slot />
+</div>
+
+<style define:vars={cssVariables}>
+	div {
+		--max-column-width: 100% / var(--max-columns, infinity) - var(--column-gap);
+		--column-width: max(
+			var(--max-column-width),
+			min(var(--min-column-width), 100%)
+		);
+
+		display: grid;
+		grid-template-columns: repeat(
+			auto-fill,
+			minmax(min(100%, var(--column-width)), 1fr)
+		);
+		column-gap: var(--column-gap);
+		row-gap: var(--row-gap);
+		align-items: var(--align-items);
+	}
+</style>

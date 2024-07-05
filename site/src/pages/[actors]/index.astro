@@ -1,0 +1,41 @@
+---
+import type { GetStaticPaths } from 'astro'
+import BaseLayout from 'src/layouts/BaseLayout.astro'
+import { routes } from 'src/libs/routes.ts'
+import { labels } from 'settings.json'
+import Region from 'src/components/Region.astro'
+import Autogrid from 'src/components/Autogrid.astro'
+import ActorCard from 'src/components/ActorCard.astro'
+import { getCollection } from 'astro:content'
+import Title from 'src/components/Title.astro'
+
+const actors = await getCollection('actors')
+
+export const getStaticPaths = (() => {
+	return [
+		{
+			params: { actors: routes.actors() },
+		},
+	]
+}) satisfies GetStaticPaths
+---
+
+<BaseLayout titles={[labels.actors]}>
+	<Region bottom color="secondary">
+		<Title white>
+			Les {labels.actors}
+		</Title>
+		<div class="prose prose-xl mx-auto mt-8 text-white">
+			<p>
+				Les cités éducatives consistent en une grande alliance des acteurs
+				éducatifs dans les quartiers prioritaires de la politique de la ville :
+				parents, services de l’État, des collectivités, associations, habitants.
+			</p>
+		</div>
+	</Region>
+	<Region color="transparent">
+		<Autogrid>
+			{actors.map((el) => <ActorCard slug={el.slug} />)}
+		</Autogrid>
+	</Region>
+</BaseLayout>

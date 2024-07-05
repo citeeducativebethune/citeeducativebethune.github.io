@@ -1,0 +1,53 @@
+---
+import type { GetStaticPaths } from 'astro'
+import { getCollection } from 'astro:content'
+import Autogrid from 'src/components/Autogrid.astro'
+import Region from 'src/components/Region.astro'
+import BaseLayout from 'src/layouts/BaseLayout.astro'
+import { routes } from 'src/libs/routes.ts'
+import { labels } from 'settings.json'
+import ActionCard from 'src/components/ActionCard.astro'
+import { getEntry } from 'astro:content'
+import Title from 'src/components/Title.astro'
+import { sortByDate } from 'src/libs/collections.ts'
+
+const { slug } = Astro.params
+
+const actions = sortByDate((await getCollection('actions')).filter((el) =>
+	el.data.actors.includes(slug),
+))
+
+const actor = await getEntry('actors', slug)
+
+export const getStaticPaths = (async () => {
+	const actors = await getCollection('actors')
+	return actors.map((el) => ({
+		params: { slug: el.slug, actors: routes.actors() },
+	}))
+}) satisfies GetStaticPaths
+---
+
+<BaseLayout titles={[labels.actions, actor.data.title]}>
+	<Region bottom color="neutral">
+		<Title Element='h1'>
+			{actor.data.title}
+		</Title>
+		{
+			actor.data.description && (
+				<div class="prose prose-xl mx-auto mt-8">
+					<p>{actor.data.description}</p>
+				</div>
+			)
+		}
+	</Region>
+	<Region color='transparent'>
+		{actions.length> 0 ? (
+
+			<Autogrid>
+			{actions.map((el) => <ActionCard slug={el.slug} />)}
+		</Autogrid>
+			): (
+				<p class="text-lx text-center">Pas d'actualité pour le moment...</p>
+			)}
+	</Region>
+</BaseLayout>

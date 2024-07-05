@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content'
+import { sortByDate } from 'src/libs/collections.ts'
+import ActionCard from './ActionCard.astro'
+
+const actions = sortByDate(await getCollection('actions')).slice(0,5)
+---
+
+<ul class="flex snap-x snap-mandatory gap-8 overflow-x-auto pl-24 pr-8">
+	{
+		actions.map((el) => (
+			<li class="shrink-0 basis-72 snap-center">
+				<ActionCard slug={el.slug} withBg />
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	ul::-webkit-scrollbar {
+		display: none;
+	}
+</style>

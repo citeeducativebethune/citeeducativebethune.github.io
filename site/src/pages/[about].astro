@@ -1,0 +1,77 @@
+---
+import type { GetStaticPaths } from 'astro'
+import BaseLayout from 'src/layouts/BaseLayout.astro'
+import { routes } from 'src/libs/routes.ts'
+import { labels } from 'settings.json'
+import Region from 'src/components/Region.astro'
+import { getEntry } from 'astro:content'
+import { Image } from 'astro:assets'
+import Autogrid from 'src/components/Autogrid.astro'
+import Title from 'src/components/Title.astro'
+const { data } = await getEntry('about', 'about')
+export const getStaticPaths = (() => {
+	return [
+		{
+			params: { about: routes.about() },
+		},
+	]
+}) satisfies GetStaticPaths
+---
+
+<BaseLayout titles={[labels.about]}>
+	<Region bottom color="secondary-2">
+		<Title Element="h2" white>
+			{data.introduction.title}
+		</Title>
+		<div class="prose prose-lg mx-auto text-white">
+			<p>{data.introduction.content}</p>
+		</div>
+	</Region>
+	<Region color="transparent">
+		<Title Element="h2">
+			{data.perimeter.title}
+		</Title>
+		<div
+			class="container mx-auto grid items-center justify-items-center gap-8 md:grid-cols-2"
+		>
+			<div class="prose prose-lg">
+				<p>{data.perimeter.content}</p>
+			</div>
+			<Image src={data.perimeter.image} alt="Carte de la cité éducative" />
+		</div>
+	</Region>
+	<Region top bottom color="primary">
+		<Title white Element="h2">
+			{data.goals.title}
+		</Title>
+		<ul
+			class="container mx-auto grid items-center justify-items-center gap-8 sm:grid-cols-2 sm:justify-items-stretch"
+		>
+			{
+				data.goals.items.map((el) => (
+					<li class="rounded-xl bg-white p-4 text-2xl font-semibold">{el}</li>
+				))
+			}
+		</ul>
+	</Region>
+	<Region color="transparent">
+		<Title Element="h2"> Contact </Title>
+		<Autogrid alignItems="center">
+			{
+				data.contacts.map((el) => (
+					<div class="space-y-4 rounded-xl border p-4">
+						<h3 class="text-3xl">{el.name}</h3>
+						<div class="prose prose-lg">
+							<p>{el.description}</p>
+							{el.mail && (
+								<a href={`mailto:${el.mail}`} class="text-secondary-2">
+									{el.mail}
+								</a>
+							)}
+						</div>
+					</div>
+				))
+			}
+		</Autogrid>
+	</Region>
+</BaseLayout>
